@@ -11,7 +11,7 @@ import javax.swing.Timer;
 public class GamePanel extends JPanel implements ActionListener {
 	static final int STATE_MENU = 0, STATE_SIM = 1;
 	Timer refresh;
-	int rate = 5000;
+	int rate = 1000/60;
 	int timer;
 	Environment world;
 
@@ -38,6 +38,12 @@ public class GamePanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		updateGame();
 		repaint();
+		if(timer >= 300) {
+			world.checkMitosis();
+			timer = 0;
+		} else {
+			timer++;
+		}
 	}
 
 	@Override
