@@ -23,7 +23,7 @@ public class Particle {
 	}
 	
 	void update() {
-		hitbox.setBounds(x-(mass/2), y-(mass/2), mass, mass);
+		hitbox.setBounds(x, y, mass, mass);
 	}
 	void draw(Graphics g) {
 		g.setColor(partType);

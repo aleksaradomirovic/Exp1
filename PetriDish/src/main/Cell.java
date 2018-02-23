@@ -16,8 +16,10 @@ public class Cell {
 	int move_imp, ximp, yimp;
 	Rectangle hitbox;
 	int mass;
+	int storedC, storedO, storedH;
+	int r, g, b;
 
-	public Cell(char[] genome, Environment e, int parentX, int parentY) {
+	public Cell(char[] genome, Environment e, int parentX, int parentY, int mass) {
 		this.genome = genome;
 		world = e;
 
@@ -25,20 +27,38 @@ public class Cell {
 		y = parentY;
 		move_imp = 0;
 		hitbox = new Rectangle();
-		mass = 20;
+		this.mass = mass;
+		storedC = 0;
+		storedO = 0;
+		storedH = 0;
+		
+		//ReadGenome
 	}
 
 	void mito() {
-		if (mitosis) {
-			world.newCell(genome, x, y);
+		if (mass >= 30) {
+			world.newCell(genome, x, y, mass/2);
+			mass = (int)mass/2;
 		}
 	}
 	
 	void update() {
+		
+		if(x > 850 || x < -50 || y > 850 || y < -50) {
+			world.life.remove(this);
+		}
+		
 		movement();
-		hitbox.setBounds(x-mass/2, y-mass/2, mass, mass);
+		hitbox.setBounds(x, y, mass, mass);
 		for(int i = 0; i < world.particles.size(); i++) {
-			if(hitbox.intersects(world.particles.get(i).hitbox)) {
+			Particle p = world.particles.get(i);
+			
+			if(hitbox.intersects(p.hitbox)) {
+				mass += p.mass;
+				storedC += p.c;
+				storedO += p.o;
+				storedH += p.h;
+				
 				world.particles.remove(i);
 				i--;
 			}
@@ -46,7 +66,7 @@ public class Cell {
 	}
 	void draw(Graphics g) {
 		g.setColor(Color.RED);
-		g.fillOval(x, y, 20, 20);
+		g.fillOval(x, y, mass, mass);
 	}
 	
 	void movement() {
@@ -64,4 +84,6 @@ public class Cell {
 			move_imp--;
 		}
 	}
+	
+	void runThroughGenome() {}
 }

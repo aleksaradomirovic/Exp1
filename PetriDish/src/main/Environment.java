@@ -10,14 +10,14 @@ public class Environment {
 	final char[] emptyGenome = {};
 
 	public Environment() {
-		newCell(emptyGenome, 400, 400);
+		newCell(emptyGenome, 400, 400, 20);
 		for(int i = 0; i < 100; i++) {
 			newParticle(6,6,12,new Random().nextInt(801), new Random().nextInt(801));
 		}
 	}
 
-	void newCell(char[] g, int x, int y) {
-		life.add(new Cell(g, this, x, y));
+	void newCell(char[] g, int x, int y, int mass) {
+		life.add(new Cell(g, this, x, y, (int)mass));
 	}
 	void newParticle(int c, int o, int h, int x, int y) {
 		particles.add(new Particle(c,o,h,x,y));
